@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{37972C25-0F7D-4C44-AD00-5D711E21F8C3}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "JewelWarrior", "http://localhost:62134", "{2B285E71-364E-4A31-B310-235CB3ACD845}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62134"
+		Debug.AspNetCompiler.PhysicalPath = "JewelWarrior\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62134\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62134"
+		Release.AspNetCompiler.PhysicalPath = "JewelWarrior\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62134\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "JewelWarrior\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Release|ARM.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Release|x64.ActiveCfg = Debug|Any CPU
+		{2B285E71-364E-4A31-B310-235CB3ACD845}.Release|x86.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B285E71-364E-4A31-B310-235CB3ACD845} = {37972C25-0F7D-4C44-AD00-5D711E21F8C3}
+	EndGlobalSection
+EndGlobal
