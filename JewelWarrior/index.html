@@ -2,16 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="images/ios-icon.png" sizes="57x57"/>
+    <link rel="apple-touch-icon" href="images/ios-icon-ipad.png" sizes="72x72"/>
+    <link rel="apple-touch-icon" href="images/ios-icon-iphone4.png" sizes="114x114"/>
+    <link rel="apple-touch-startup-image" href="images/ios-startup-748x1024.png" 
+          media="screen and (min-device-width: 768px) and (orientation:landscape)"/>
+    <link rel="apple-touch-startup-image" href="images/ios-startup-768x1004.png" 
+          media="screen and (min-device-width: 768px) and (orientation:portrait)" />
+    <link rel="apple-touch-startup-image" href="images/ios-startup-320x460.png" 
+          media="screen and (max-device-width: 320px)" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <title>Jewel Warrior</title>
-    <link href="css/fontfaces.css" rel="stylesheet" type="text/css"/>
+    <link href="css/fontfaces.css" rel="stylesheet" type="text/css" />
     <link href="css/main.css" rel="stylesheet" />
+    <link href="css/mobile.css" rel="stylesheet" media="screen and (max-device-width: 768px) and (orientation: portrait),
+                                                        screen and (max-device-width: 1024px) and (orientation: landscape)" />
     <script src="js/jewel.js"></script>
     <script>
         window.addEventListener("load", function () {
             jewel.load("js/dom.js");
-            jewel.load("js/screen.splash.js");
-            jewel.load("js/screen.main-menu.js", jewel.setup);
+            if (jewel.isStandalone()) {
+                jewel.load("js/screen.splash.js");
+                jewel.load("js/screen.main-menu.js", jewel.setup);
+            } else {
+                jewel.load("js/screen.splash-install.js", jewel.setup);
+            }
+
         });
     </script>
 </head>
@@ -21,8 +39,15 @@
             <h1 class="logo">Jewel <br />Warrior</h1>
             <span class="continue">Click to Continue</span>
         </div>
+        <div id="install-screen" class="screen">
+            <h1 class="logo">Jewel <br />Warrior</h1>
+            <span>
+                Click the <img src="images/install-icon.png" alt="Install icon" />
+                button to install the game to your home screen.
+            </span>
+        </div>
         <div id="main-menu" class="screen">
-            <h2 class="logo">Jewel <br/>Warrior</h2>
+            <h2 class="logo">Jewel <br />Warrior</h2>
             <ul class="menu">
                 <li><button name="game-screen">Play</button></li>
                 <li><button name="high-scores">Highscore</button></li>

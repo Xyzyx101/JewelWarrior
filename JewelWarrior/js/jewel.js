@@ -1,9 +1,9 @@
 var jewel = (function () {
     "use strict";
     var scriptQueue = []
-            , numResources = 0
-            , numResourcesLoaded = 0
-            , executeRunning = false;
+        , numResources = 0
+        , numResourcesLoaded = 0
+        , executeRunning = false;
 
     function load(src, callback) {
         var queueEntry = {
@@ -47,7 +47,24 @@ var jewel = (function () {
     }
 
     function setup() {
-        jewel.showScreen("splash-screen");
+        //hide the address bar on android
+        if (/Android/.test(navigator.userAgent)) {
+            $("html")[0].style.height = "200%";
+            setTimeout(function () {
+                window.scrollTo(0, 1);
+            }, 0);
+        }
+
+        // disable touchmove to prevent overscroll
+        jewel.dom.bind(document, "touchmove", function (event) {
+            event.preventDefault();
+        });
+
+        if (isStandalone()) {
+            showScreen("splash-screen");
+        } else {
+            showScreen("install-screen");
+        }
     }
 
     function showScreen(screenId) {
@@ -66,10 +83,18 @@ var jewel = (function () {
         jewel.screens[screenId].run();
     }
 
+    /* This will return true when installed on the homescreen of an iOS device.
+     * It will be false on iOS in a browser.  
+     * It will always be TRUE on non-iOS devices. */
+    function isStandalone() {
+        return (window.navigator.standalone !== false);
+    }
+
     return {
         load: load
         , setup: setup
         , showScreen: showScreen
         , screens: {}
+        , isStandalone: isStandalone
     };
 })();
