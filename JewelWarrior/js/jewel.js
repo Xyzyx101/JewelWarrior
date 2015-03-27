@@ -5,6 +5,13 @@ var jewel = (function () {
         , numResourcesLoaded = 0
         , executeRunning = false;
 
+    var settings = {
+        rows: 8
+        , cols: 8
+        , baseScore: 100
+        , numJewelTypes: 7
+    };
+
     function load(src, callback) {
         var queueEntry = {
             src: src,
@@ -96,5 +103,6 @@ var jewel = (function () {
         , showScreen: showScreen
         , screens: {}
         , isStandalone: isStandalone
+        , settings: settings
     };
 })();

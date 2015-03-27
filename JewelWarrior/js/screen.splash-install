@@ -1,5 +1,0 @@
-﻿jewel.screens["screen.splash-install"] = (function() {
-	return {
-		run : function() {}
-	}
-})();

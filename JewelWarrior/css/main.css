@@ -73,8 +73,8 @@
     margin : 0;
     text-align : center;
     color : rgb(70,120,20);
-    text-shadow : 0.03em 0.03em 0.1em rgb(255, 255, 0),    
-                -0.03em -0.03em 0.1em rgb(255, 255, 0),
+    text-shadow : 0.03em 0.03em 0.05em rgb(255, 255, 0),    
+                -0.03em -0.03em 0.05em rgb(255, 255, 0),
                 0.12em 0.18em 0.1em rgb(0,0,0)
 }
 
