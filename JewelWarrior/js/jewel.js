@@ -106,6 +106,10 @@ var jewel = (function () {
         return ("Worker" in window);
     }
 
+    function getLoadProgress() {
+        return numResourcesLoaded / numResources;
+    }
+
     return {
         load: load
         , preload: preload
@@ -115,5 +119,6 @@ var jewel = (function () {
         , isStandalone: isStandalone
         , settings: settings
         , hasWebWorkers: hasWebWorkers
+        , getLoadProgress: getLoadProgress
     };
 })();

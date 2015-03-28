@@ -1,7 +1,10 @@
 ﻿jewel.board = (function () {
     var worker
         , messageCount
-        , callbacks;
+        , callbacks
+        , rows
+        , cols
+        , jewels;
 
     function post(command, data, callback) {
         callbacks[messageCount] = callback;
@@ -78,5 +81,5 @@
         , swap: swap
         , getBoard: getBoard
         , print: print
-    }
+    };
 })();
