@@ -32,6 +32,8 @@
                 } else {
                     jewel.load("js/board.js");
                 }
+                jewel.load("js/screen.game.js");
+                jewel.load("js/display.canvas.js");
             } else {
                 jewel.load("js/screen.install.js", jewel.setup);
             }
@@ -63,7 +65,9 @@
                 <li><button name="exit-screen">Exit</button></li>
             </ul>
         </div>
-        <div id="game-screen" class="screen"></div>
+        <div id="game-screen" class="screen">
+            <div class="game-board"></div>
+        </div>
         <div id="high-scores" class="screen"></div>
     </div>
 </body>

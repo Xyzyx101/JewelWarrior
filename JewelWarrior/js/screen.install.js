@@ -1,5 +1,5 @@
 ﻿jewel.screens["install-screen"] = (function() {
-	return {
-		run : function() {}
-	}
+    return {
+        run: function () { }
+    };
 })();
