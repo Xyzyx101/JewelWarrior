@@ -31,6 +31,11 @@ var jewel = (function () {
         image.src = src;
     }
 
+    function preload(src) {
+        var image = new Image();
+        image.src = src;
+    }
+
     function executeScriptQueue() {
         var next = scriptQueue[0]
             , first
@@ -97,12 +102,18 @@ var jewel = (function () {
         return (window.navigator.standalone !== false);
     }
 
+    function hasWebWorkers() {
+        return ("Worker" in window);
+    }
+
     return {
         load: load
+        , preload: preload
         , setup: setup
         , showScreen: showScreen
         , screens: {}
         , isStandalone: isStandalone
         , settings: settings
+        , hasWebWorkers: hasWebWorkers
     };
 })();

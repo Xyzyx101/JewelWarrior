@@ -25,11 +25,16 @@
             jewel.load("js/dom.js");
             if (jewel.isStandalone()) {
                 jewel.load("js/screen.splash.js");
-                jewel.load("js/screen.main-menu.js", jewel.setup);
+                jewel.load("js/screen.main-menu.js");
+                if (jewel.hasWebWorkers()) {
+                    jewel.preload("js/board.worker.js");
+                    jewel.load("js/board.worker-interface.js", jewel.setup);
+                } else {
+                    jewel.load("js/board.js", jewel.setup);
+                }
             } else {
                 jewel.load("js/screen.splash-install.js", jewel.setup);
             }
-            jewel.load("js/board.js", jewel.setup);
         });
     </script>
 </head>

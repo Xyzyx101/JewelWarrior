@@ -197,7 +197,6 @@
             str += "\r\n";
         }
         console.log(str);
-
     }
 
     // create a copy of the jewel board
