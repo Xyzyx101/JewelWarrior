@@ -162,3 +162,46 @@ ul.menu li button:active {
 #game-screen .game-board .board-bg {
         z-index : 0;
 }
+
+.screen footer {
+    display : block;
+    position : absolute;
+    bottom : 0;
+    height : 1.0em;
+    width : 100%;
+}
+
+.screen footer button {
+    margin-left : 0.25em;
+    margin-right : 0.25em;
+    padding : 0 0.75em;
+    font-family : Geo, sans-serif;
+    font-size : 0.5em;
+    color : rgba(200,200,100,0.5);
+    background : rgb(10,20,0);
+    border : 1px solid rgba(200,200,100,0.5);
+    border-radius : 0.2em;
+}
+
+/* Game screen pause overlay */
+#game-screen .pause-overlay {
+    display : none;
+    position : absolute;
+    left : 0;
+    top : 0;
+    width : 100%;
+    height : 100%;
+    z-index : 100;
+    background : rgba(20,20,20,0.7);
+}
+#game-screen .pause-overlay .pause-text {
+    width : 100%;
+    text-align : center;
+    margin-top : 50%;
+    font-family : Slackey;
+    font-size : 1.0em;
+    text-shadow : 0.03em 0.03em 0.05em rgb(255, 255, 0),    
+                -0.03em -0.03em 0.05em rgb(255, 255, 0),
+                0.12em 0.18em 0.1em rgb(0,0,0);
+    color : rgb(70, 120, 20);
+}
