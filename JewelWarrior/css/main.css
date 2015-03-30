@@ -144,6 +144,10 @@ ul.menu li button:active {
     position : relative;
     width : 8em;
     height : 8em;
+    perspective: 16em;
+    -webkit-perspective: 16em;
+    -moz-perspective: 16em;
+    -ms-perspective: 16em;
 }
 
 #game-screen .game-board .board-bg,
