@@ -22,6 +22,7 @@
         isGameOver = false;
         setLevelTimer(true);
         updateGameInfo();
+        jewel.audio.initialize();
         board.initialize(function () {
             display.initialize(function () {
                 display.redraw(board.getBoard(), function () {
@@ -165,7 +166,12 @@
                     display.moveJewels(boardEvent.data, next);
                     break;
                 case "remove":
+                    jewel.audio.play("match");
                     display.removeJewels(boardEvent.data, next);
+                    break;
+                case "badswap":
+                    jewel.audio.play("badswap");
+                    next();
                     break;
                 case "refill":
                     announce("No Moves!");
@@ -222,6 +228,7 @@
     }
 
     function advanceLevel() {
+        jewel.audio.play("levelup");
         gameState.level++;
         announce("Level " + gameState.level);
         updateGameInfo();
@@ -243,6 +250,7 @@
     }
 
     function gameOver() {
+        jewel.audio.play("gameover");
         cursor.selected = false;
         isGameOver = true;
         jewel.display.gameOver( function() {

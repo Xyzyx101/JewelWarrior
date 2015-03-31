@@ -27,7 +27,7 @@
 
     function messageHandler(event) {
         // uncomment to log web worker messages
-        console.log(event.data)
+        //console.log(event.data)
 
         var message = event.data;
         jewels = message.jewels;

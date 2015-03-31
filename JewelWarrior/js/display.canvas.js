@@ -355,7 +355,6 @@
     }
 
     function gameOver(callback) {
-        console.log(animations);
         addAnimation(1000, {
             render: function (pos) {
                 canvas.style.left = 0.2 * pos * (Math.random() - 0.5) + "em";
