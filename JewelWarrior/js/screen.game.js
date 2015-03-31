@@ -1,27 +1,39 @@
 ﻿jewel.screens["game-screen"] = (function () {
+    "use strict";
     var firstRun = true
         , paused
+        , pauseStart
         , dom = jewel.dom
         , overlay = dom.$("#game-screen .pause-overlay")[0]
-        , cursor;
-
+        , cursor
+        , gameState
+        , isGameOver;
+        
     function startGame() {
         var board = jewel.board
             , display = jewel.display;
+        gameState = {
+            level: 0
+            , score: 0
+            , timer: 0
+            , startTime: 0
+            , endTime: 0
+        };
+        isGameOver = false;
+        setLevelTimer(true);
+        updateGameInfo();
         board.initialize(function () {
             display.initialize(function () {
-                cursor = {
-                    x: 0
+                display.redraw(board.getBoard(), function () {
+                    cursor = {
+                        x: 0
                         , y: 0
                         , selected: false
-                };
-                display.redraw(board.getBoard(), function () {
-                    // do nothing for now  
+                    };
+                    advanceLevel();
                 });
             });
         });
-        paused = false;
-        overlay.style.display = "none";
     }
 
     function setup() {
@@ -51,11 +63,18 @@
         }
         paused = true;
         overlay.style.display = "block";
+        pauseStart = Date.now();
+        clearTimeout(gameState.timer);
+        jewel.display.pause();
     }
 
     function resumeGame() {
         paused = false;
         overlay.style.display = "none";
+        var pausedTime = Date.now() - pauseStart;
+        gameState.startTime += pausedTime;
+        setLevelTimer();
+        jewel.display.resume(pausedTime);
     }
 
     function exitGame() {
@@ -77,6 +96,9 @@
 
 
     function selectJewel(x, y) {
+        if (paused || isGameOver) {
+            return;
+        }
         // no arguments means using keyboard and cursor
         if (arguments.length === 0) {
             selectJewel(cursor.x, cursor.y);
@@ -103,6 +125,9 @@
     }
 
     function moveCursor(x, y) {
+        if (paused || isGameOver ) {
+            return;
+        }
         var settings = jewel.settings;
         if (cursor.selected) {
             x += cursor.x;
@@ -143,17 +168,89 @@
                     display.removeJewels(boardEvent.data, next);
                     break;
                 case "refill":
+                    announce("No Moves!");
                     display.refill(boardEvent.data, next);
+                    break;
+                case "score":
+                    addScore(boardEvent.data);
+                    next();
                     break;
                 default:
                     next();
                     break;
             }
         } else {
-            display.redraw(jewel.board.getBoard(), function () {
-                // good to go again
-            });
+            display.redraw(jewel.board.getBoard(), null);
         }
+    }
+
+    function updateGameInfo() {
+        var $ = jewel.dom.$;
+        $("#game-screen .score span")[0].innerHTML = gameState.score;
+        $("#game-screen .level span")[0].innerHTML = gameState.level;
+    }
+
+    function setLevelTimer(reset) {
+        var $ = jewel.dom.$;
+        if (gameState.timer) {
+            clearTimeout(gameState.timer);
+            gameState.timer = 0;
+        }
+        if (reset) {
+            gameState.startTime = Date.now();
+            gameState.endTime = jewel.settings.baseLevelTimer * Math.pow(gameState.level, -0.05 * gameState.level);
+        }
+        var delta = gameState.startTime + gameState.endTime - Date.now()
+            , percent = (delta / gameState.endTime) * 100
+            , progress = $("#game-screen .time .indicator")[0];
+        if (delta < 0) {
+            gameOver();
+        } else {
+            progress.style.width = percent + "%";
+            gameState.timer = setTimeout(setLevelTimer, 30);
+        }
+    }
+
+    function addScore(points) {
+        var settings = jewel.settings
+            , nextLevelAt = Math.pow(settings.baseLevelScore, Math.pow(settings.baseLevelExp, gameState.level - 1));
+        gameState.score += points;
+        if (gameState.score >= nextLevelAt) {
+            advanceLevel();
+        }
+        updateGameInfo();
+    }
+
+    function advanceLevel() {
+        gameState.level++;
+        announce("Level " + gameState.level);
+        updateGameInfo();
+        gameState.startTime = Date.now();
+        gameState.endTime = jewel.settings.baseLevelTimer * Math.pow(gameState.level, -0.05 * gameState.level);
+        setLevelTimer(true);
+        jewel.display.levelUp();
+    }
+
+    function announce(str) {
+        var dom = jewel.dom
+            , $ = dom.$
+            , element = $("#game-screen .announcement")[0];
+        element.innerHTML = str;
+        dom.removeClass(element, "zoomfade");
+        setTimeout(function () {
+            dom.addClass(element, "zoomfade");
+        }, 1);
+    }
+
+    function gameOver() {
+        cursor.selected = false;
+        isGameOver = true;
+        jewel.display.gameOver( function() {
+            announce("Game Over");
+            setTimeout(function () {
+                jewel.showScreen("main-menu");
+            }, 3000);
+        });
     }
 
     return {

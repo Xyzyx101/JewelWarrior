@@ -9,7 +9,8 @@
         , jewels
         , cursor
         , previousCycle
-        , animations = [];
+        , animations = []
+        , paused;
 
     function setup() {
         var $ = jewel.dom.$
@@ -31,10 +32,12 @@
 
     function cycle() {
         var time = Date.now();
-        if (animations.length === 0) {
-            renderCursor(time);
+        if (!paused) {
+            if (animations.length === 0) {
+                renderCursor(time);
+            }
+            renderAnimations(time, previousCycle);
         }
-        renderAnimations(time, previousCycle);
         previousCycle = time;
         requestAnimationFrame(cycle);
     }
@@ -46,8 +49,10 @@
             jewelSprite.addEventListener("load", callback, false);
             jewelSprite.src = "images/jewels" + jewelSize + ".png";
             firstRun = false;
+        } else {
+            callback();
         }
-        callback();
+        paused = false;
     }
 
     function createBackground() {
@@ -113,7 +118,9 @@
             }
         }
         renderCursor();
-        callback();
+        if (callback) {
+            callback();
+        }
     }
 
     function renderCursor(time) {
@@ -202,7 +209,7 @@
                     );
                 }
                 , done: function () {
-                    if (--n == 0) {
+                    if (--n === 0) {
                         cursor = oldCursor;
                         callback();
                     }
@@ -231,7 +238,7 @@
                     ctx.restore();
                 }
                 , done: function () {
-                    if (--n == 0) {
+                    if (--n === 0) {
                         callback();
                     }
                 }
@@ -253,12 +260,11 @@
                     clearJewel(x, y);
                     drawJewel(newJewels[x][y], x, y);
                 }
-                lastJewel = thisJewel
+                lastJewel = thisJewel;
                 jewel.dom.transform(canvas, "rotateX(" + (360 * pos) + "deg)");
             }
             , done: function () {
-                //canvas.style.webkitTransform = "";
-                jewel.dom.transform(canvas, "rotateX(0)")
+                jewel.dom.transform(canvas, "rotateX(0)");
                 callback();
             }
         });
@@ -307,6 +313,122 @@
         }
     }
 
+    function pause() {
+        paused = true;
+    }
+
+    function resume(pausedTime) {
+        paused = false;
+        for (var i = 0; i < animations.length; ++i) {
+            animations[i].startTime += pausedTime;
+        }
+    }
+
+    function levelUp(callback) {
+        addAnimation(1000, {
+            before: function (pos) {
+                var j = Math.floor(pos * rows * 2)
+                , x
+                , y;
+                for (y = 0, x = j; y < rows; ++y, --x) {
+                    if (x >= 0 && x < cols) {
+                        clearJewel(x, y);
+                        drawJewel(jewels[x][y], x, y);
+                    }
+                }
+            },
+            render: function (pos) {
+                var j = Math.floor(pos * rows * 2)
+                    , x
+                    , y;
+                ctx.save();
+                ctx.globalCompositeOperation = "lighter";
+                for (y = 0, x = j; y < rows; ++y, --x) {
+                    if (x >= 0 && x < cols) {
+                        drawJewel(jewels[x][y], x, y, 1.1);
+                    }
+                }
+                ctx.restore();
+            },
+            done: callback
+        });
+    }
+
+    function gameOver(callback) {
+        console.log(animations);
+        addAnimation(1000, {
+            render: function (pos) {
+                canvas.style.left = 0.2 * pos * (Math.random() - 0.5) + "em";
+                canvas.style.top = 0.2 * pos * (Math.random() - 0.5) + "em";
+            }
+            , done: function () {
+                canvas.style.left = "0";
+                canvas.style.top = "0";
+                explode(callback);
+            }
+        });
+    }
+
+    function explode(callback) {
+        var pieces = []
+            , piece
+            , x
+            , y;
+        for (x = 0; x < cols; ++x) {
+            for (y = 0; y < rows; ++y) {
+                piece = {
+                    type: jewels[x][y]
+                    , pos: {
+                        x: x + 0.5
+                        , y: y + 0.5
+                    },
+                    vel: {
+                        x: (Math.random() - 0.5) * 20
+                        , y: -Math.random() * 10
+                    }
+                    , rot: (Math.random() - 0.5) * 3
+                };
+                pieces.push(piece);
+            }
+        }
+        addAnimation(2000, {
+            before: function (pos) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            , render: function (pos, delta) {
+                explodePieces(pieces, pos, delta);
+            }
+            , done: function () {
+                cursor = null;
+                callback();
+            }
+        });
+    }
+
+    function explodePieces(pieces, pos, delta) {
+        var piece
+            , i;
+        for (i = 0; i < pieces.length; ++i) {
+            piece = pieces[i];
+            piece.vel.y += 50 * delta;
+            piece.pos.y += piece.vel.y * delta;
+            piece.pos.x += piece.vel.x * delta;
+
+            if (piece.pos.x < 0 || piece.pos.x > cols) {
+                piece.pos.x = Math.max(0, piece.pos.x);
+                piece.pos.x = Math.min(cols, piece.pos.x);
+                piece.vel.x *= -1;
+            }
+            ctx.save();
+            ctx.globalCompositeOperation = "lighter";
+            ctx.translate(piece.pos.x * jewelSize, piece.pos.y * jewelSize);
+            ctx.rotate(piece.rot * pos * Math.PI * 4);
+            ctx.translate(-piece.pos.x * jewelSize, -piece.pos.y * jewelSize);
+            drawJewel(piece.type, piece.pos.x - 0.5, piece.pos.y - 0.5);
+            ctx.restore();
+        }
+    }
+
     return {
         initialize: initialize
         , redraw: redraw
@@ -314,5 +436,9 @@
         , moveJewels: moveJewels
         , removeJewels: removeJewels
         , refill: refill
+        , pause: pause
+        , resume: resume
+        , levelUp: levelUp
+        , gameOver: gameOver
     };
 })();

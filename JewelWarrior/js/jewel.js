@@ -30,6 +30,9 @@ var jewel = (function () {
             , LEFT_STICK_LEFT: "moveLeft"
             , LEFT_STICK_RIGHT: "moveRight"
         }
+        , baseLevelScore : 1500
+        , baseLevelExp: 1.05
+        , baseLevelTimer: 60000
     };
 
     function load(src, callback) {
